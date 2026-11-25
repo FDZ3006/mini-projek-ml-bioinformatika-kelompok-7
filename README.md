@@ -1,72 +1,153 @@
 # Analisis Sensitivitas dan Kesalahan Klasifikasi Tanda Retinopati Diabetik Menggunakan k-Nearest Neighbors dan Decision Tree
 
-**Mini Project Machine Learning Bioinformatika — Kelompok 7**
+**Mini Project Machine Learning Bioinformatika, Kelompok 7**
 
-> Proyek ini merupakan eksperimen klasifikasi machine learning pada fitur hasil pengolahan citra retina. Proyek ini bukan alat diagnosis klinis. Hasil k-NN di bawah bersifat sementara; notebook k-NN merupakan konversi dari PDF dan belum dijalankan ulang.
+Proyek ini menguji klasifikasi tanda retinopati diabetik dari fitur numerik hasil pengolahan citra fundus. Analisis memberi perhatian pada sensitivity/recall kelas positif dan false negative (FN). Hasil k-NN yang ditampilkan merupakan hasil sementara dari artefak yang tersedia. Notebook k-NN adalah konversi dari PDF menggunakan Gemini dan belum dijalankan ulang.
 
-## Latar belakang
+Repository ini dikelola dan disusun sebagai tempat terpusat untuk mengumpulkan, mendokumentasikan, dan menampilkan hasil proyek. Eksperimen dan materi yang dihimpun merupakan kerja kolaboratif anggota Kelompok 7 sesuai pembagian tugas masing-masing.
 
-Retinopati diabetik merupakan komplikasi diabetes yang dapat merusak pembuluh darah retina dan mengganggu penglihatan. Proposal Kelompok 7 mengangkat potensi analisis fitur citra fundus untuk mengenali tanda retinopati secara lebih konsisten. Dataset berisi fitur hasil ekstraksi citra retina, bukan foto fundus mentah. Proyek merencanakan perbandingan k-Nearest Neighbors (k-NN) dan Decision Tree dengan perhatian khusus pada sensitivitas kelas positif, false negative, dan interpretasi fitur.
+> Proyek ini merupakan eksperimen akademik, bukan alat diagnosis klinis. Dataset berisi fitur hasil ekstraksi citra retina, bukan foto fundus mentah.
 
-## Tujuan
+## Gambaran proyek
 
-Sesuai proposal, proyek bertujuan:
+Retinopati diabetik dapat merusak pembuluh darah retina dan mengganggu penglihatan. Proposal proyek merencanakan penggunaan machine learning untuk mempelajari pola pada fitur retina dan membandingkan k-Nearest Neighbors (k-NN) dengan Decision Tree. Perhatian khusus diberikan pada kasus positif yang salah diklasifikasikan sebagai negatif, karena kesalahan tersebut tercatat sebagai FN.
 
-1. Membangun model k-NN dan Decision Tree untuk klasifikasi tanda retinopati diabetik.
-2. Membandingkan sensitivitas, false negative, dan metrik evaluasi kedua model pada data uji.
-3. Menganalisis feature importance serta dampak fitur pemeriksaan awal terhadap kinerja klasifikasi.
+## Tujuan penelitian
 
-## Dataset dan fitur
+- Mengembangkan model k-NN dan Decision Tree untuk klasifikasi tanda retinopati diabetik.
+- Membandingkan sensitivity/recall, FN, dan metrik evaluasi lain pada data uji.
+- Menganalisis kontribusi fitur dan dampak fitur pemeriksaan awal terhadap klasifikasi.
 
-Dataset **Diabetic Retinopathy Debrecen** berasal dari [UCI Machine Learning Repository, ID 329](https://archive.ics.uci.edu/dataset/329/diabetic+retinopathy+debrecen) (DOI: [10.24432/C5XP4P](https://doi.org/10.24432/C5XP4P)). Data awal mencakup 1.151 observasi, 19 fitur prediktor, dan satu label biner. Label 0 berarti tidak ada tanda retinopati diabetik dan label 1 berarti ada tanda.
+## Dataset
 
-Kelompok fitur meliputi kualitas citra dan pre-screening, enam fitur microaneurysms, delapan fitur exudates, jarak makula–diskus optik, diameter diskus optik, serta keluaran AM/FM. Dataset berisi representasi numerik hasil pengolahan citra fundus, bukan citra mentah.
+Dataset **Diabetic Retinopathy Debrecen** diperoleh dari [UCI Machine Learning Repository, ID 329](https://archive.ics.uci.edu/dataset/329/diabetic+retinopathy+debrecen), DOI [10.24432/C5XP4P](https://doi.org/10.24432/C5XP4P). Dataset awal berisi 1.151 observasi, 19 fitur prediktor, dan satu target biner.
 
-## Referensi
+| Komponen | Keterangan |
+|---|---|
+| Kelas 0 | Tidak ada tanda retinopati diabetik |
+| Kelas 1 | Ada tanda retinopati diabetik |
+| Kelompok fitur | Kualitas citra, pre-screening, enam fitur microaneurysms, delapan fitur exudates, jarak makula ke diskus optik, diameter diskus optik, keluaran AM/FM |
 
-Antal, B. dan Hajdu, A. (2014). *An ensemble-based system for automatic screening of diabetic retinopathy*. Knowledge-Based Systems, 60, 20–27. [https://doi.org/10.1016/j.knosys.2013.12.023](https://doi.org/10.1016/j.knosys.2013.12.023).
+Dataset mentah tidak disertakan. Cara memperoleh data dijelaskan di [data/README.md](data/README.md). Notebook EDA mengambil data melalui ucimlrepo menggunakan ID UCI 329.
 
-## Metodologi dan alur pengerjaan
+## Alur pengerjaan dan progres
 
-1. **EDA — Fajar:** pemeriksaan distribusi kelas, kualitas data, statistik dan sebaran fitur, serta korelasi dan interpretasi biologis awal. Lihat [notebook EDA asli](notebooks/eda/Analisis_EDA_Diabetic_Retinopathy_Kelompok_7.ipynb).
-2. **Preprocessing — Isnaini:** audit data, penghapusan lima baris duplikat identik, stratified train-test split 80:20, dan StandardScaler yang di-fit pada data latih. Hasil: 1.146 observasi bersih, 916 data latih, dan 230 data uji. Lihat [notebook pipeline EDA dan preprocessing](notebooks/preprocessing/Pipeline_EDA_dan_Preprocessing_Diabetic_Retinopathy_Kelompok_7.ipynb).
-3. **k-NN — Elvin:** berkas notebook yang tersedia merupakan konversi PDF ke notebook dengan Gemini. Notebook belum dijalankan ulang sehingga reproduksibilitasnya belum diverifikasi. CSV, TXT, grafik, dan PDF hasil evaluasi tersedia sebagai hasil sementara.
-4. **Decision Tree — Abid:** belum ditemukan notebook maupun hasil Decision Tree di workspace saat repo ini disiapkan.
-5. **Perbandingan dan dokumentasi — Rakan:** perbandingan final kedua algoritma belum tersedia karena hasil Decision Tree belum ada.
+| Tahap | Penanggung jawab | Progres dan berkas |
+|---|---|---|
+| Exploratory Data Analysis (EDA) | Fajar Dhuha Zafran | Tersedia, termasuk notebook asli dengan output. [Buka notebook](notebooks/eda/Analisis_EDA_Diabetic_Retinopathy_Kelompok_7.ipynb) |
+| Dataset dan preprocessing | Isnaini Tiana Hayu | Tersedia dalam pipeline EDA dan preprocessing, termasuk audit, split, dan scaling. [Buka notebook](notebooks/preprocessing/Pipeline_EDA_dan_Preprocessing_Diabetic_Retinopathy_Kelompok_7.ipynb) |
+| k-NN | Elvin Ramadhani | Artefak evaluasi tersedia. Notebook merupakan konversi PDF dan belum dijalankan ulang. [Buka notebook](notebooks/knn/uji_k_NN_kel7.ipynb) |
+| Decision Tree | Abid Ra'fad Aziz | Hasil eksperimen terverifikasi belum ditemukan. |
+| Perbandingan dan dokumentasi | Rakan Fawwaz Irawadi | Perbandingan final menunggu hasil Decision Tree. |
 
-Notebook pipeline menggabungkan materi EDA dan preprocessing; notebook EDA asli juga dipertahankan sebagai pekerjaan Fajar.
+Urutan analisis yang direncanakan adalah EDA, audit dan preprocessing, pembagian data, scaling, eksperimen k-NN, lalu Decision Tree dan perbandingan kedua algoritma. Tahap Decision Tree dan perbandingan final belum selesai.
 
-## Hasil sementara k-NN
+## Hasil EDA
 
-Angka berikut dicocokkan dengan CSV evaluasi dan ringkasan TXT yang tersedia. Evaluasi menggunakan test set 230 observasi.
+EDA mencatat 1.151 observasi dan 19 fitur. Tidak ditemukan missing values. Terdapat lima baris duplikat identik. Distribusi label awal adalah 540 kelas 0 dan 611 kelas 1. Kolom exudate3 dan exudate4 identik pada data yang dianalisis; korelasi ma1 dengan ma2 sekitar 0,996. Median ma3 kelas positif adalah 39, dibanding 24 pada kelas negatif. Median exudate4 kelas positif sedikit lebih rendah, 4,368 dibanding 4,576 pada kelas negatif, sehingga pola median tidak sama untuk semua fitur.
 
-| Skenario | k | Accuracy | Precision | Recall / sensitivitas | F1 | ROC-AUC | TP | TN | FP | FN |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 19 fitur | 21 | 63,04% | 68,32% | 56,56% | 61,88% | 0,7050 | 69 | 76 | 32 | 53 |
-| 17 fitur | 17 | 58,26% | 63,54% | 50,00% | 55,96% | 0,6781 | 61 | 73 | 35 | 61 |
+### Distribusi kelas
 
-Pada test set tersebut, sensitivitas 19 fitur berarti model mengenali 69 dari 122 kasus positif (56,56%) dan melewatkan 53 kasus positif (FN; 43,44%). Skenario 17 fitur mengenali 61 dari 122 kasus positif (50,00%) dan melewatkan 61 (FN; 50,00%). Ini menunjukkan masih banyak kasus positif yang terlewat pada kedua skenario. Angka tersebut adalah hasil sementara, bukan bukti kinerja klinis.
+![Distribusi kelas pada dataset awal](hasil/eda/01_distribusi_kelas.png)
 
-Hasil tuning CSV menunjukkan k=21 untuk 19 fitur dan k=17 untuk 17 fitur memiliki F1 CV tertinggi pada skenario masing-masing. Pemilihan ini perlu ditegaskan dalam laporan karena nilai recall CV tertinggi terjadi pada k lain. Notebook k-NN belum dijalankan ulang; angka hasil yang disajikan adalah angka dari artefak CSV/TXT yang sudah tersedia.
+Jumlah kelas 0 dan kelas 1 sebelum penghapusan duplikat adalah 540 dan 611.
 
-Artefak evaluasi: [ringkasan k-NN](hasil/knn/ringkasan_knn.txt), [tabel evaluasi test set](hasil/knn/evaluasi_uji_knn.csv), [hasil tuning CV](hasil/knn/hasil_cv_tuning_k.csv), dan [PDF konversi beserta kode/output](hasil/knn/hasil_uji_k_NN.pdf). Grafik: [kurva CV](hasil/knn/01_kurva_cv_knn.png), [confusion matrix](hasil/knn/02_confusion_matrix_knn.png), dan [kurva ROC](hasil/knn/03_kurva_roc_knn.png).
+### Histogram fitur terpilih
 
-Artefak EDA tersedia pada [tabel distribusi kelas](hasil/eda/distribusi_kelas.csv), [audit kualitas data](hasil/eda/audit_kualitas_data.csv), [statistik deskriptif](hasil/eda/statistik_deskriptif_fitur.csv), serta [grafik distribusi kelas](hasil/eda/01_distribusi_kelas.png) dan [matriks korelasi](hasil/eda/04_matriks_korelasi.png). Artefak preprocessing utama meliputi [ringkasan split](hasil/preprocessing/03_ringkasan_stratified_split.csv), [verifikasi scaling](hasil/preprocessing/04_verifikasi_standard_scaler.csv), dan tabel train/test scaled serta unscaled di [folder hasil preprocessing](hasil/preprocessing/).
+![Histogram fitur retina](hasil/eda/02_histogram_fitur.png)
 
-## Keterbatasan dan status
+Histogram memperlihatkan sebaran empat fitur yang dipilih dari kelompok microaneurysms, exudates, serta ukuran anatomi retina. Sebagian fitur divisualisasikan dengan transformasi log untuk menampilkan sebaran yang menceng.
 
-- Eksperimen memakai fitur tabular dari citra yang sudah diproses, bukan citra retina mentah.
-- Hasil k-NN masih sementara dan notebook hasil konversi belum direproduksi.
-- Decision Tree belum tersedia; perbandingan final kedua algoritma belum dapat diklaim selesai.
-- Sensitivitas k-NN yang tercatat masih terbatas dan false negative masih banyak.
-- Proyek ditujukan untuk pembelajaran dan analisis, bukan diagnosis atau keputusan klinis.
+### Boxplot fitur per kelas
+
+![Boxplot fitur terpilih berdasarkan label](hasil/eda/03_boxplot_fitur_per_kelas.png)
+
+Boxplot membandingkan sebaran empat fitur terpilih menurut label. Median ma3 kelas positif lebih tinggi, sedangkan median exudate4 sedikit lebih rendah. Visualisasi ini bersifat deskriptif dan tidak menunjukkan hubungan sebab-akibat.
+
+### Matriks korelasi
+
+![Matriks korelasi Pearson antarfitur](hasil/eda/04_matriks_korelasi.png)
+
+Matriks menampilkan korelasi Pearson antarfitur. Pasangan exudate3 dan exudate4 berkorelasi 1,000; nilai CSV menunjukkan kedua kolom identik pada dataset ini. Fitur ma1 dan ma2 berkorelasi sekitar 0,996.
+
+## Preprocessing
+
+Audit preprocessing mencatat 1.151 baris awal, tanpa NaN atau Inf, dan lima baris duplikat identik yang dihapus sebelum pembagian data. Dataset bersih berisi 1.146 observasi. Pembagian dilakukan secara stratified dengan rasio 80:20 dan random_state=42: 916 data latih dan 230 data uji. CSV split menunjukkan proporsi kelas sebanding pada kedua partisi.
+
+StandardScaler di-fit pada data latih untuk mencegah statistik data uji masuk ke proses fit. Dua skenario disiapkan:
+
+- **19 fitur:** semua fitur prediktor.
+- **17 fitur:** tanpa quality dan pre_screening.
+
+### Distribusi kelas pada split
+
+![Distribusi kelas pada data latih dan uji](hasil/preprocessing/01_distribusi_split_stratified.png)
+
+Grafik membandingkan komposisi kelas pada dataset bersih, data latih, dan data uji. Jumlah aktual setiap kelas tersedia pada [ringkasan stratified split](hasil/preprocessing/03_ringkasan_stratified_split.csv).
+
+### Perbandingan scaling
+
+![Perbandingan skala fitur sebelum dan sesudah StandardScaler](hasil/preprocessing/02_perbandingan_scaling_fitur.png)
+
+Visualisasi membandingkan skala fitur sebelum dan sesudah standardisasi. Verifikasi numerik untuk data latih dan uji tersedia di [CSV verifikasi StandardScaler](hasil/preprocessing/04_verifikasi_standard_scaler.csv).
+
+## Eksperimen k-NN
+
+Notebook yang tersedia menggunakan KNeighborsClassifier dengan Euclidean distance dan uniform weights. Tuning dilakukan pada data latih menggunakan StratifiedKFold 10-fold dengan pengacakan dan random_state=42. Kandidat k adalah bilangan ganjil dari 1 sampai 35.
+
+Di notebook konversi, k dipilih berdasarkan F1 CV tertinggi, dengan recall lalu ROC-AUC sebagai pemecah seri. Aturan tersebut menghasilkan k=21 untuk 19 fitur dan k=17 untuk 17 fitur dalam CSV tuning. Recall CV tertinggi sendiri terjadi pada k=1 dan k=3. Notebook belum dijalankan ulang, maka konfigurasi dan hasil ini belum merupakan reproduksi independen.
+
+## Hasil evaluasi k-NN
+
+Tabel berikut dicocokkan dengan hasil/knn/evaluasi_uji_knn.csv. Evaluasi memakai 230 observasi pada test set, termasuk 122 sampel positif.
+
+| Metrik | 19 fitur | 17 fitur |
+|---|---:|---:|
+| k terpilih | 21 | 17 |
+| Accuracy | 63,04% | 58,26% |
+| Precision | 68,32% | 63,54% |
+| Recall / sensitivity | 56,56% | 50,00% |
+| F1-score | 61,88% | 55,96% |
+| ROC-AUC | 0,7050 | 0,6781 |
+| TP | 69 | 61 |
+| TN | 76 | 73 |
+| FP | 32 | 35 |
+| FN | 53 | 61 |
+| FNR | 43,44% | 50,00% |
+
+Pada skenario 19 fitur, 69 dari 122 sampel positif terdeteksi dan 53 menjadi FN. Pada skenario 17 fitur, 61 terdeteksi dan 61 menjadi FN. Dengan demikian, sensitivity/recall masing-masing 56,56% dan 50,00%. Accuracy saja tidak cukup untuk menggambarkan jumlah kasus positif yang terlewat; recall, FN, dan FNR perlu dibaca bersama. Hasil ini masih sementara dan tidak dapat ditafsirkan sebagai kinerja klinis.
+
+### Kurva cross-validation
+
+![Skor cross-validation k-NN untuk kandidat k](hasil/knn/01_kurva_cv_knn.png)
+
+Grafik menunjukkan skor accuracy, recall, dan F1 pada kandidat k di kedua skenario. Garis vertikal menandai k terpilih menurut F1 CV pada notebook konversi.
+
+### Confusion matrix
+
+![Confusion matrix k-NN pada test set](hasil/knn/02_confusion_matrix_knn.png)
+
+Confusion matrix memperlihatkan TP, TN, FP, dan FN pada test set untuk skenario 19 dan 17 fitur. Nilai FN pada kedua skenario juga tercantum dalam tabel evaluasi di atas.
+
+### Kurva ROC
+
+![Kurva ROC k-NN pada test set](hasil/knn/03_kurva_roc_knn.png)
+
+Kurva membandingkan true positive rate dan false positive rate pada berbagai ambang skor, dengan ROC-AUC 0,7050 untuk 19 fitur dan 0,6781 untuk 17 fitur.
+
+## Pembahasan sementara dan batasan
+
+Dalam artefak evaluasi ini, skenario 19 fitur memiliki recall lebih tinggi dan FN lebih sedikit daripada skenario 17 fitur. Namun, 53 kasus positif masih terlewat pada skenario 19 fitur. Mengurangi dua fitur pemeriksaan awal pada skenario 17 fitur tidak meningkatkan metrik test set yang dilaporkan. Kesimpulan ini terbatas pada hasil yang tersedia dan perlu ditinjau setelah notebook k-NN diverifikasi serta Decision Tree dievaluasi dengan pembagian dan metrik yang sebanding.
+
+Data yang digunakan berupa fitur tabular dari citra fundus, bukan foto mentah. Ukuran dataset dan satu pembagian data uji membatasi generalisasi. Hasil tidak ditujukan untuk diagnosis atau keputusan klinis. Pengerjaan Decision Tree belum tersedia, sehingga perbandingan final kedua algoritma belum dapat dibuat.
 
 ## Struktur repository
 
 ```text
 README.md
-.gitignore
 requirements.txt
+data/
+  README.md
 notebooks/
   eda/
   preprocessing/
@@ -75,28 +156,31 @@ hasil/
   eda/
   preprocessing/
   knn/
-data/
-  README.md
 ```
 
-Proposal asli tersimpan di workspace lokal dan tidak dimasukkan ke repository publik karena memuat NIM anggota. Ringkasan latar belakang, tujuan, metodologi, dan pembagian tugas pada README merujuk pada proposal tersebut.
+Folder notebooks/ menyimpan notebook analisis. Folder hasil/ berisi CSV, TXT, PDF, PNG, dan scaler yang mendukung dokumentasi atau reproduksi. Folder data/ menjelaskan sumber dan cara memperoleh dataset. Proposal PDF tidak disertakan karena memuat NIM anggota.
 
-## Mendapatkan data
+## Instalasi dan penggunaan
 
-Dataset mentah tidak disertakan di repository. Lihat [petunjuk dataset](data/README.md) untuk sumber UCI dan cara memperolehnya. Notebook EDA mengambil dataset menggunakan ucimlrepo; notebook lain dapat menggunakan hasil preprocessing yang sudah disediakan.
-
-## Dependensi dan menjalankan notebook
-
-Gunakan Python dengan Jupyter Notebook/JupyterLab. Pasang dependensi yang tercantum di [requirements.txt](requirements.txt), lalu buka notebook yang diperlukan. Notebook k-NN mengandalkan CSV preprocessing; jalankan pipeline preprocessing lebih dahulu atau gunakan artefak CSV di hasil/preprocessing/. Notebook k-NN tersedia sebagai hasil konversi dan **belum diuji ulang**, sehingga petunjuk ini belum merupakan jaminan eksekusi berhasil. Notebook pipeline dapat mengambil dataset UCI saat dijalankan dan memerlukan akses jaringan.
+Clone repository, buat lingkungan virtual, pasang dependensi, lalu buka Jupyter:
 
 ```bash
+git clone https://github.com/FDZ3006/mini-projek-ml-bioinformatika-kelompok-7.git
+cd mini-projek-ml-bioinformatika-kelompok-7
+python -m venv .venv
+source .venv/bin/activate
 python -m pip install -r requirements.txt
 jupyter notebook
 ```
 
-Notebook dapat dibuka melalui tautan pada bagian metodologi. Jalankan hanya setelah menyiapkan dependensi dan dataset sesuai petunjuk.
+Dataset mentah tidak disertakan. Ikuti petunjuk pada [data/README.md](data/README.md). Notebook EDA mengambil dataset UCI saat dijalankan dan memerlukan koneksi internet. Notebook k-NN bergantung pada CSV preprocessing di hasil/preprocessing/, tetapi notebook konversi belum dijalankan ulang dan belum diverifikasi.
 
-## Anggota dan pembagian pekerjaan
+## Referensi
+
+- Antal, B. dan Hajdu, A. (2014). *An ensemble-based system for automatic screening of diabetic retinopathy*. Knowledge-Based Systems, 60, 20-27. [https://doi.org/10.1016/j.knosys.2013.12.023](https://doi.org/10.1016/j.knosys.2013.12.023)
+- UCI Machine Learning Repository. *Diabetic Retinopathy Debrecen*, dataset 329. [https://doi.org/10.24432/C5XP4P](https://doi.org/10.24432/C5XP4P)
+
+## Anggota kelompok
 
 | Anggota | Tanggung jawab |
 |---|---|
@@ -106,11 +190,12 @@ Notebook dapat dibuka melalui tautan pada bagian metodologi. Jalankan hanya sete
 | Abid Ra'fad Aziz | Decision Tree |
 | Rakan Fawwaz Irawadi | Perbandingan model, kesimpulan, dan dokumentasi |
 
-## Progres project
+NIM tidak dicantumkan. Proposal asli yang memuat NIM disimpan lokal dan dikecualikan dari repository publik.
 
-- [x] EDA tersedia beserta output.
-- [x] Pipeline EDA dan preprocessing tersedia beserta output.
-- [x] Artefak evaluasi k-NN tersedia.
-- [ ] Reproduksi notebook k-NN hasil konversi.
-- [ ] Decision Tree dan evaluasinya.
-- [ ] Perbandingan final kedua model serta kesimpulan.
+## Status pengerjaan
+
+- **EDA:** tersedia beserta notebook dan hasil.
+- **Preprocessing:** tersedia beserta notebook dan hasil.
+- **k-NN:** artefak evaluasi tersedia; notebook konversi belum dijalankan ulang.
+- **Decision Tree:** belum ada hasil eksperimen terverifikasi.
+- **Perbandingan final:** belum selesai.
