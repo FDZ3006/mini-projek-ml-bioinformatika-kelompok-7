@@ -1,0 +1,10 @@
+Aspek_Audit,Hasil
+Jumlah observasi awal,"1,151 baris x 20 kolom"
+Nilai hilang (NaN) dan tak hingga (Inf),"NaN = 0, Inf = 0"
+"Validitas domain biner {0, 1} dan numerik >= 0","Biner valid = True, Nonnegatif valid = True"
+Baris duplikat identik (dihapus sebelum split),5 baris
+Jumlah observasi bersih pasca-deduplikasi,"1,146 baris unik"
+Kesetaraan eksak kolom exudate3 == exudate4,True
+Selisih absolut maksimum |exudate3 - exudate4|,0.000000
+Observasi dengan quality == 0 (kualitas citra rendah),4 (0.35%)
+Observasi dengan pre_screening == 0,94 (8.17%)

@@ -1,0 +1,28 @@
+# Metadata Windows / NTFS
+*:Zone.Identifier
+Thumbs.db
+desktop.ini
+
+# Cache Python dan Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Lingkungan virtual
+.venv/
+venv/
+env/
+
+# Rahasia dan konfigurasi lokal
+.env
+.env.*
+!.env.example
+
+# Proposal asli menyertakan NIM anggota; simpan lokal, jangan publikasikan
+/dokumentasi/proposal/*.pdf
+
+# Arsip sementara dan file sementara editor
+*.zip
+*.tmp
+*.swp
+*.swo

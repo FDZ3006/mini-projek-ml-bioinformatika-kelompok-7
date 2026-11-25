@@ -1,0 +1,6 @@
+RINGKASAN TAHAP DATASET DAN PREPROCESSING (BAGIAN II)
+Diabetic Retinopathy Debrecen | Kelompok 7 - Isnaini Tiana Hayu (G0401241021)
+Observasi mentah: 1151 -> Bersih pasca-deduplikasi: 1146 (dihapus 5 duplikat identik).
+Stratified Split 80:20 (random_state=42): Train = 916 | Test = 230.
+Verifikasi anti-leakage: irisan indeks = 0, duplikat lintas train-test = 0.
+Scaling: StandardScaler di-fit hanya pada X_train untuk skenario 19 fitur dan 17 fitur.

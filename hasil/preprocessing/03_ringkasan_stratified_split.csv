@@ -1,0 +1,4 @@
+Partisi,Total,Persen_Dataset,Kelas_0,Persen_0,Kelas_1,Persen_1
+Dataset Bersih (Pasca-Deduplikasi),1146,100.0,540,47.12,606,52.88
+Data Latih (Train 80%),916,79.93,432,47.16,484,52.84
+Data Uji (Test 20%),230,20.07,108,46.96,122,53.04

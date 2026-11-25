@@ -1,0 +1,5 @@
+RINGKASAN PEMODELAN & EVALUASI k-NEAREST NEIGHBORS (k-NN)
+Diabetic Retinopathy Debrecen | Kelompok 7
+Data Latih: 916 observasi | Data Uji: 230 observasi
+19 Fitur -> k optimal = 21 | Accuracy = 0.6304 | Precision = 0.6832 | Recall = 0.5656 | F1 = 0.6188 | ROC-AUC = 0.7050 | TP = 69 | TN = 76 | FP = 32 | FN = 53
+17 Fitur -> k optimal = 17 | Accuracy = 0.5826 | Precision = 0.6354 | Recall = 0.5000 | F1 = 0.5596 | ROC-AUC = 0.6781 | TP = 61 | TN = 73 | FP = 35 | FN = 61
