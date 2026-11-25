@@ -2,7 +2,7 @@
 
 **Mini Project Machine Learning Bioinformatika, Kelompok 7**
 
-Proyek ini menguji klasifikasi tanda retinopati diabetik dari fitur numerik hasil pengolahan citra fundus. Analisis memberi perhatian pada sensitivity/recall kelas positif dan false negative (FN). Hasil k-NN yang ditampilkan merupakan hasil sementara dari artefak yang tersedia. Notebook k-NN adalah konversi dari PDF menggunakan Gemini dan belum dijalankan ulang.
+Proyek ini menguji klasifikasi tanda retinopati diabetik dari fitur numerik hasil pengolahan citra fundus. Analisis memberi perhatian pada sensitivity/recall kelas positif dan false negative (FN). Hasil k-NN yang ditampilkan merupakan hasil sementara dari artefak yang tersedia. Notebook asli dari Elvin kini tersedia dengan output eksekusi tersimpan; notebook tersebut belum dijalankan ulang di repository ini.
 
 Repository ini dikelola dan disusun sebagai tempat terpusat untuk mengumpulkan, mendokumentasikan, dan menampilkan hasil proyek. Eksperimen dan materi yang dihimpun merupakan kerja kolaboratif anggota Kelompok 7 sesuai pembagian tugas masing-masing.
 
@@ -36,7 +36,7 @@ Dataset mentah tidak disertakan. Cara memperoleh data dijelaskan di [data/README
 |---|---|---|
 | Exploratory Data Analysis (EDA) | Fajar Dhuha Zafran | Tersedia, termasuk notebook asli dengan output. [Buka notebook](notebooks/eda/Analisis_EDA_Diabetic_Retinopathy_Kelompok_7.ipynb) |
 | Dataset dan preprocessing | Isnaini Tiana Hayu | Tersedia dalam pipeline EDA dan preprocessing, termasuk audit, split, dan scaling. [Buka notebook](notebooks/preprocessing/Pipeline_EDA_dan_Preprocessing_Diabetic_Retinopathy_Kelompok_7.ipynb) |
-| k-NN | Elvin Ramadhani | Artefak evaluasi tersedia. Notebook merupakan konversi PDF dan belum dijalankan ulang. [Buka notebook](notebooks/knn/uji_k_NN_kel7.ipynb) |
+| k-NN | Elvin Ramadhani | Notebook asli dengan output tersimpan dan artefak evaluasi tersedia. [Buka notebook asli](notebooks/knn/uji_k_NN_kel7.ipynb). [Lihat salinan konversi sebelumnya](notebooks/knn/uji_k_NN_konversi_gemini.ipynb). |
 | Decision Tree | Abid Ra'fad Aziz | Hasil eksperimen terverifikasi belum ditemukan. |
 | Perbandingan dan dokumentasi | Rakan Fawwaz Irawadi | Perbandingan final menunggu hasil Decision Tree. |
 
@@ -95,7 +95,7 @@ Visualisasi membandingkan skala fitur sebelum dan sesudah standardisasi. Verifik
 
 Notebook yang tersedia menggunakan KNeighborsClassifier dengan Euclidean distance dan uniform weights. Tuning dilakukan pada data latih menggunakan StratifiedKFold 10-fold dengan pengacakan dan random_state=42. Kandidat k adalah bilangan ganjil dari 1 sampai 35.
 
-Di notebook konversi, k dipilih berdasarkan F1 CV tertinggi, dengan recall lalu ROC-AUC sebagai pemecah seri. Aturan tersebut menghasilkan k=21 untuk 19 fitur dan k=17 untuk 17 fitur dalam CSV tuning. Recall CV tertinggi sendiri terjadi pada k=1 dan k=3. Notebook belum dijalankan ulang, maka konfigurasi dan hasil ini belum merupakan reproduksi independen.
+Pada notebook asli Elvin, k dipilih berdasarkan F1 CV tertinggi, dengan recall lalu ROC-AUC sebagai pemecah seri. Aturan tersebut menghasilkan k=21 untuk 19 fitur dan k=17 untuk 17 fitur dalam CSV tuning. Recall CV tertinggi sendiri terjadi pada k=1 dan k=3. Notebook asli memuat output dari eksekusi sebelumnya; output metrik dan konfigurasi cocok dengan artefak CSV. Notebook tidak dijalankan ulang saat diperiksa, sehingga hasil ini belum direproduksi secara independen di repository.
 
 ## Hasil evaluasi k-NN
 
@@ -121,7 +121,7 @@ Pada skenario 19 fitur, 69 dari 122 sampel positif terdeteksi dan 53 menjadi FN.
 
 ![Skor cross-validation k-NN untuk kandidat k](hasil/knn/01_kurva_cv_knn.png)
 
-Grafik menunjukkan skor accuracy, recall, dan F1 pada kandidat k di kedua skenario. Garis vertikal menandai k terpilih menurut F1 CV pada notebook konversi.
+Grafik menunjukkan skor accuracy, recall, dan F1 pada kandidat k di kedua skenario. Garis vertikal menandai k terpilih menurut F1 CV pada notebook asli.
 
 ### Confusion matrix
 
@@ -137,7 +137,7 @@ Kurva membandingkan true positive rate dan false positive rate pada berbagai amb
 
 ## Pembahasan sementara dan batasan
 
-Dalam artefak evaluasi ini, skenario 19 fitur memiliki recall lebih tinggi dan FN lebih sedikit daripada skenario 17 fitur. Namun, 53 kasus positif masih terlewat pada skenario 19 fitur. Mengurangi dua fitur pemeriksaan awal pada skenario 17 fitur tidak meningkatkan metrik test set yang dilaporkan. Kesimpulan ini terbatas pada hasil yang tersedia dan perlu ditinjau setelah notebook k-NN diverifikasi serta Decision Tree dievaluasi dengan pembagian dan metrik yang sebanding.
+Dalam artefak evaluasi ini, skenario 19 fitur memiliki recall lebih tinggi dan FN lebih sedikit daripada skenario 17 fitur. Namun, 53 kasus positif masih terlewat pada skenario 19 fitur. Mengurangi dua fitur pemeriksaan awal pada skenario 17 fitur tidak meningkatkan metrik test set yang dilaporkan. Kesimpulan ini terbatas pada hasil yang tersedia dan perlu ditinjau setelah notebook k-NN dijalankan ulang serta Decision Tree dievaluasi dengan pembagian dan metrik yang sebanding.
 
 Data yang digunakan berupa fitur tabular dari citra fundus, bukan foto mentah. Ukuran dataset dan satu pembagian data uji membatasi generalisasi. Hasil tidak ditujukan untuk diagnosis atau keputusan klinis. Pengerjaan Decision Tree belum tersedia, sehingga perbandingan final kedua algoritma belum dapat dibuat.
 
@@ -152,6 +152,8 @@ notebooks/
   eda/
   preprocessing/
   knn/
+    uji_k_NN_kel7.ipynb
+    uji_k_NN_konversi_gemini.ipynb
 hasil/
   eda/
   preprocessing/
@@ -173,7 +175,7 @@ python -m pip install -r requirements.txt
 jupyter notebook
 ```
 
-Dataset mentah tidak disertakan. Ikuti petunjuk pada [data/README.md](data/README.md). Notebook EDA mengambil dataset UCI saat dijalankan dan memerlukan koneksi internet. Notebook k-NN bergantung pada CSV preprocessing di hasil/preprocessing/, tetapi notebook konversi belum dijalankan ulang dan belum diverifikasi.
+Dataset mentah tidak disertakan. Ikuti petunjuk pada [data/README.md](data/README.md). Notebook EDA mengambil dataset UCI saat dijalankan dan memerlukan koneksi internet. Notebook k-NN mencari CSV preprocessing secara rekursif dari direktori kerja jika ZIP input Colab tidak tersedia. Buka Jupyter dari akar repository agar pencarian mencakup hasil/preprocessing/. Notebook asli memiliki output tersimpan, tetapi belum dijalankan ulang dalam repository ini.
 
 ## Referensi
 
@@ -196,6 +198,6 @@ NIM tidak dicantumkan. Proposal asli yang memuat NIM disimpan lokal dan dikecual
 
 - **EDA:** tersedia beserta notebook dan hasil.
 - **Preprocessing:** tersedia beserta notebook dan hasil.
-- **k-NN:** artefak evaluasi tersedia; notebook konversi belum dijalankan ulang.
+- **k-NN:** notebook asli Elvin dengan output tersimpan dan artefak evaluasi tersedia; notebook belum dijalankan ulang di repository ini.
 - **Decision Tree:** belum ada hasil eksperimen terverifikasi.
 - **Perbandingan final:** belum selesai.
