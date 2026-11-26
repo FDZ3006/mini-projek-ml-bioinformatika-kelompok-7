@@ -1,0 +1,5 @@
+,0
+ccp_alpha,0
+max_depth,11
+min_samples_leaf,5
+min_samples_split,2

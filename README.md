@@ -37,10 +37,10 @@ Dataset mentah tidak disertakan. Cara memperoleh data dijelaskan di [data/README
 | Exploratory Data Analysis (EDA) | Fajar Dhuha Zafran | Tersedia, termasuk notebook asli dengan output. [Buka notebook](notebooks/eda/Analisis_EDA_Diabetic_Retinopathy_Kelompok_7.ipynb) |
 | Dataset dan preprocessing | Isnaini Tiana Hayu | Tersedia dalam pipeline EDA dan preprocessing, termasuk audit, split, dan scaling. [Buka notebook](notebooks/preprocessing/Pipeline_EDA_dan_Preprocessing_Diabetic_Retinopathy_Kelompok_7.ipynb) |
 | k-NN | Elvin Ramadhani | Notebook asli dengan output tersimpan dan artefak evaluasi tersedia. [Buka notebook asli](notebooks/knn/uji_k_NN_kel7.ipynb). [Lihat salinan konversi sebelumnya](notebooks/knn/uji_k_NN_konversi_gemini.ipynb). |
-| Decision Tree | Abid Ra'fad Aziz | Hasil eksperimen terverifikasi belum ditemukan. |
+| Decision Tree | Abid Ra'fad Aziz | Notebook hasil run beserta output dan artefak evaluasi tersedia. [Buka notebook](notebooks/decision_tree/Decision_Tree_DR.ipynb). |
 | Perbandingan dan dokumentasi | Rakan Fawwaz Irawadi | Perbandingan final menunggu hasil Decision Tree. |
 
-Urutan analisis yang direncanakan adalah EDA, audit dan preprocessing, pembagian data, scaling, eksperimen k-NN, lalu Decision Tree dan perbandingan kedua algoritma. Tahap Decision Tree dan perbandingan final belum selesai.
+Urutan analisis mencakup EDA, audit dan preprocessing, pembagian data, scaling untuk k-NN, lalu eksperimen k-NN dan Decision Tree. Hasil kedua model sudah tersedia, tetapi analisis perbandingan final dari Rakan belum selesai.
 
 ## Hasil EDA
 
@@ -135,9 +135,63 @@ Confusion matrix memperlihatkan TP, TN, FP, dan FN pada test set untuk skenario 
 
 Kurva membandingkan true positive rate dan false positive rate pada berbagai ambang skor, dengan ROC-AUC 0,7050 untuk 19 fitur dan 0,6781 untuk 17 fitur.
 
+## Eksperimen Decision Tree
+
+Notebook utama [Decision_Tree_DR.ipynb](notebooks/decision_tree/Decision_Tree_DR.ipynb) berasal dari Abid dan memuat output tersimpan untuk seluruh 10 sel kode, dengan execution count 1 sampai 10. Notebook tidak dijalankan ulang saat integrasi. Dataset train dan test masing-masing berisi 916 dan 230 observasi untuk kedua konfigurasi, dengan pembagian kelas yang cocok dengan artefak preprocessing.
+
+Decision Tree menggunakan fitur unscaled. Skenario 19 fitur memakai seluruh prediktor; skenario 17 fitur menghilangkan quality dan pre_screening. Baseline menggunakan DecisionTreeClassifier dengan random_state=42. Tuning memakai StratifiedKFold 5-fold dan refit berdasarkan recall. Parameter yang dicari mencakup max_depth, min_samples_leaf, min_samples_split, dan ccp_alpha.
+
+### Hasil baseline dan tuned
+
+Angka pada tabel dicocokkan dengan CSV hasil_dt, output notebook, dan CSV parameter. Semua metrik dihitung pada test set 230 observasi.
+
+| Skenario | Model | Accuracy | Precision | Recall | F1-score | ROC-AUC | FN |
+|---|---|---:|---:|---:|---:|---:|---:|
+| 19 fitur | Baseline | 0,6000 | 0,6316 | 0,5902 | 0,6102 | 0,6006 | 50 |
+| 19 fitur | Tuned | 0,6261 | 0,6607 | 0,6066 | 0,6325 | 0,6785 | 48 |
+| 17 fitur | Baseline | 0,6435 | 0,6786 | 0,6230 | 0,6496 | 0,6448 | 46 |
+| 17 fitur | Tuned | 0,6826 | 0,7290 | 0,6393 | 0,6812 | 0,7329 | 44 |
+
+Pada hasil tuned, konfigurasi 17 fitur mencatat recall 0,6393 dan 44 FN dari 122 sampel positif; konfigurasi 19 fitur mencatat recall 0,6066 dan 48 FN. Baseline 17 fitur juga memiliki recall lebih tinggi dan FN lebih rendah daripada baseline 19 fitur. Ini ringkasan deskriptif dari hasil yang tersedia, bukan perbandingan final antarmodel.
+
+Parameter terbaik yang tersimpan:
+
+- **19 fitur:** max_depth=15, min_samples_leaf=5, min_samples_split=2, ccp_alpha=0.
+- **17 fitur:** max_depth=11, min_samples_leaf=5, min_samples_split=2, ccp_alpha=0.
+
+### Tuning dan pruning
+
+![Kurva tuning max_depth dan pruning ccp_alpha](hasil/decision_tree/tuning_pruning_curve.png)
+
+Grafik merangkum perubahan recall cross-validation terhadap max_depth dan ccp_alpha pada kedua konfigurasi. Parameter akhir dipilih melalui pencarian grid di data latih.
+
+### Confusion matrix
+
+![Confusion matrix Decision Tree baseline dan tuned](hasil/decision_tree/confusion_matrix.png)
+
+Matriks menampilkan perbandingan baseline dan tuned untuk konfigurasi 19 dan 17 fitur. Pada model tuned, jumlah FN adalah 48 untuk 19 fitur dan 44 untuk 17 fitur.
+
+### Feature importance
+
+![Feature importance Decision Tree untuk 19 dan 17 fitur](hasil/decision_tree/feature_importance.png)
+
+Grafik membandingkan Gini importance dan permutation importance berdasarkan recall. Untuk kedua konfigurasi, ma1 memiliki Gini importance terbesar pada tabel: 0,2249 untuk 19 fitur dan 0,2419 untuk 17 fitur. Permutation importance mengukur perubahan skor recall ketika nilai fitur diacak; nilai negatif tidak berarti kontribusi kausal.
+
+### Visualisasi pohon
+
+![Pohon Decision Tree dengan 19 fitur](hasil/decision_tree/tree_19fitur.png)
+
+Pohon tuned untuk konfigurasi 19 fitur dengan max_depth=15.
+
+![Pohon Decision Tree dengan 17 fitur](hasil/decision_tree/tree_17fitur.png)
+
+Pohon tuned untuk konfigurasi 17 fitur dengan max_depth=11.
+
+CSV evaluasi, best parameters, dan feature importance tersedia di [folder hasil Decision Tree](hasil/decision_tree/). Berkas model joblib juga disertakan sebagai artefak model hasil eksperimen.
+
 ## Pembahasan sementara dan batasan
 
-Dalam artefak evaluasi ini, skenario 19 fitur memiliki recall lebih tinggi dan FN lebih sedikit daripada skenario 17 fitur. Namun, 53 kasus positif masih terlewat pada skenario 19 fitur. Mengurangi dua fitur pemeriksaan awal pada skenario 17 fitur tidak meningkatkan metrik test set yang dilaporkan. Kesimpulan ini terbatas pada hasil yang tersedia dan perlu ditinjau setelah notebook k-NN dijalankan ulang serta Decision Tree dievaluasi dengan pembagian dan metrik yang sebanding.
+Dalam hasil k-NN yang tersedia, skenario 19 fitur memiliki recall lebih tinggi dan FN lebih sedikit daripada skenario 17 fitur. Pada Decision Tree tuned, skenario 17 fitur mencatat recall lebih tinggi dan FN lebih sedikit daripada 19 fitur. Karena k-NN memilih k berdasarkan F1 dengan stratified 10-fold CV, sedangkan Decision Tree menggunakan stratified 5-fold CV dan refit recall, serta notebook k-NN belum dijalankan ulang, angka ini belum cukup untuk menyatakan model mana yang lebih baik secara final. Perbandingan perlu menyelaraskan prosedur evaluasi dan dibahas oleh tim.
 
 Data yang digunakan berupa fitur tabular dari citra fundus, bukan foto mentah. Ukuran dataset dan satu pembagian data uji membatasi generalisasi. Hasil tidak ditujukan untuk diagnosis atau keputusan klinis. Pengerjaan Decision Tree belum tersedia, sehingga perbandingan final kedua algoritma belum dapat dibuat.
 
@@ -154,13 +208,16 @@ notebooks/
   knn/
     uji_k_NN_kel7.ipynb
     uji_k_NN_konversi_gemini.ipynb
+  decision_tree/
+    Decision_Tree_DR.ipynb
 hasil/
   eda/
   preprocessing/
   knn/
+  decision_tree/
 ```
 
-Folder notebooks/ menyimpan notebook analisis. Folder hasil/ berisi CSV, TXT, PDF, PNG, dan scaler yang mendukung dokumentasi atau reproduksi. Folder data/ menjelaskan sumber dan cara memperoleh dataset. Proposal PDF tidak disertakan karena memuat NIM anggota.
+Folder notebooks/ menyimpan notebook analisis asli dan salinan konversi k-NN. Folder hasil/ berisi CSV, TXT, PDF, PNG, scaler, serta model joblib yang mendukung dokumentasi atau reproduksi. Folder data/ menjelaskan sumber dan cara memperoleh dataset. Proposal PDF tidak disertakan karena memuat NIM anggota. ZIP output Decision Tree diekstrak dan tidak dimasukkan.
 
 ## Instalasi dan penggunaan
 
@@ -175,7 +232,7 @@ python -m pip install -r requirements.txt
 jupyter notebook
 ```
 
-Dataset mentah tidak disertakan. Ikuti petunjuk pada [data/README.md](data/README.md). Notebook EDA mengambil dataset UCI saat dijalankan dan memerlukan koneksi internet. Notebook k-NN mencari CSV preprocessing secara rekursif dari direktori kerja jika ZIP input Colab tidak tersedia. Buka Jupyter dari akar repository agar pencarian mencakup hasil/preprocessing/. Notebook asli memiliki output tersimpan, tetapi belum dijalankan ulang dalam repository ini.
+Dataset mentah tidak disertakan. Ikuti petunjuk pada [data/README.md](data/README.md). Notebook EDA mengambil dataset UCI saat dijalankan dan memerlukan koneksi internet. Notebook k-NN mencari CSV preprocessing secara rekursif dari direktori kerja jika ZIP input Colab tidak tersedia. Buka Jupyter dari akar repository agar pencarian mencakup hasil/preprocessing/. Notebook Decision Tree dirancang untuk Google Colab dan meminta empat CSV train/test melalui mekanisme upload jika file tidak berada di direktori kerjanya. Notebook asli memuat output tersimpan, tetapi tidak dijalankan ulang dalam repository ini.
 
 ## Referensi
 
@@ -199,5 +256,5 @@ NIM tidak dicantumkan. Proposal asli yang memuat NIM disimpan lokal dan dikecual
 - **EDA:** tersedia beserta notebook dan hasil.
 - **Preprocessing:** tersedia beserta notebook dan hasil.
 - **k-NN:** notebook asli Elvin dengan output tersimpan dan artefak evaluasi tersedia; notebook belum dijalankan ulang di repository ini.
-- **Decision Tree:** belum ada hasil eksperimen terverifikasi.
+- **Decision Tree:** notebook hasil run, output, evaluasi baseline/tuned, tuning, feature importance, dan visualisasi pohon tersedia.
 - **Perbandingan final:** belum selesai.
